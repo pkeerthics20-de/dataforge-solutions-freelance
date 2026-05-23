@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataForge — Data Engineering & Analytics Solutions</title>
+<meta name="description" content="DataForge helps small businesses and enterprises build reliable data pipelines, dashboards, and analytics solutions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal: #1D9E75;
+    --teal-dark: #0F6E56;
+    --teal-deeper: #085041;
+    --teal-light: #E1F5EE;
+    --teal-mid: #9FE1CB;
+    --purple-light: #EEEDFE;
+    --purple: #534AB7;
+    --amber-light: #FAEEDA;
+    --amber: #854F0B;
+    --blue-light: #E6F1FB;
+    --blue: #185FA5;
+    --text: #1a1a1a;
+    --text-muted: #666;
+    --text-faint: #999;
+    --bg: #ffffff;
+    --bg-soft: #f8f8f6;
+    --border: rgba(0,0,0,0.1);
+    --border-light: rgba(0,0,0,0.06);
+    --font: 'DM Sans', sans-serif;
+    --serif: 'DM Serif Display', serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--border-light);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2rem;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .nav-wrapper {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 20px;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .logo span { color: var(--teal); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 14px; color: var(--text-muted);
+    text-decoration: none; font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--teal); color: #fff; border: none;
+    padding: 8px 20px; border-radius: 24px;
+    font-size: 13px; font-weight: 500;
+    font-family: var(--font); cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--teal-dark); }
+  .hamburger { display: none; background: none; border: none; cursor: pointer; font-size: 22px; }
+
+  /* HERO */
+  .hero {
+    max-width: 1100px; margin: 0 auto;
+    padding: 6rem 2rem 5rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: center;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--teal-light); color: var(--teal-deeper);
+    font-size: 12px; font-weight: 500;
+    padding: 5px 14px; border-radius: 20px;
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: '●'; color: var(--teal); font-size: 8px; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: 48px; font-weight: 400;
+    line-height: 1.1; letter-spacing: -0.5px;
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--teal); }
+  .hero p {
+    font-size: 16px; color: var(--text-muted);
+    line-height: 1.75; margin-bottom: 2rem;
+    max-width: 420px;
+  }
+  .hero-btns { display: flex; gap: 12px; }
+  .btn-primary {
+    background: var(--teal); color: #fff; border: none;
+    padding: 13px 28px; border-radius: 28px;
+    font-size: 14px; font-weight: 500;
+    font-family: var(--font); cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--teal-dark); }
+  .btn-ghost {
+    background: transparent; color: var(--text);
+    border: 0.5px solid var(--border);
+    padding: 13px 28px; border-radius: 28px;
+    font-size: 14px; font-weight: 400;
+    font-family: var(--font); cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: background 0.2s;
+  }
+  .btn-ghost:hover { background: var(--bg-soft); }
+  .hero-visual {
+    background: var(--bg-soft);
+    border: 0.5px solid var(--border-light);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .pipeline-step {
+    display: flex; align-items: center; gap: 12px;
+    background: #fff;
+    border: 0.5px solid var(--border-light);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px; font-weight: 500;
+  }
+  .pipeline-step .icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .pipeline-step .arrow {
+    margin-left: auto; color: var(--text-faint); font-size: 12px;
+  }
+  .pipeline-connector {
+    width: 1px; height: 16px; background: var(--border);
+    margin-left: 31px;
+  }
+
+  /* STATS */
+  .stats {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .stat {
+    padding: 2rem;
+    border-right: 0.5px solid var(--border-light);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 36px; color: var(--teal);
+    line-height: 1; margin-bottom: 6px;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); }
+
+  /* SECTIONS */
+  section {
+    max-width: 1100px; margin: 0 auto;
+    padding: 5rem 2rem;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .section-label {
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1rem;
+  }
+  section h2 {
+    font-family: var(--serif);
+    font-size: 36px; font-weight: 400;
+    letter-spacing: -0.3px; margin-bottom: 0.75rem;
+  }
+  .section-sub {
+    font-size: 15px; color: var(--text-muted);
+    max-width: 520px; margin-bottom: 3rem;
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .service-card {
+    background: var(--bg);
+    border: 0.5px solid var(--border-light);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .service-card:hover {
+    border-color: var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .service-card.featured {
+    border: 1.5px solid var(--teal);
+  }
+  .service-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 1rem;
+  }
+  .icon-teal { background: var(--teal-light); }
+  .icon-purple { background: var(--purple-light); }
+  .icon-amber { background: var(--amber-light); }
+  .icon-blue { background: var(--blue-light); }
+  .service-card h3 { font-size: 16px; font-weight: 500; margin-bottom: 8px; }
+  .service-card p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+  .service-tag {
+    display: inline-block; margin-top: 14px;
+    font-size: 11px; font-weight: 500;
+    padding: 4px 12px; border-radius: 14px;
+  }
+  .tag-small { background: var(--teal-light); color: var(--teal-deeper); }
+  .tag-enterprise { background: var(--purple-light); color: var(--purple); }
+
+  /* STACK */
+  .stack-group { margin-bottom: 2rem; }
+  .stack-group-label {
+    font-size: 12px; font-weight: 500; color: var(--text-muted);
+    margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.8px;
+  }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    font-size: 13px; font-weight: 400;
+    padding: 6px 14px; border-radius: 20px;
+    border: 0.5px solid var(--border);
+    background: var(--bg-soft); color: var(--text-muted);
+  }
+  .pill.cert {
+    background: var(--teal-light); color: var(--teal-deeper);
+    border-color: var(--teal-mid);
+    font-weight: 500;
+  }
+
+  /* TIERS */
+  .tiers-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .tier {
+    border: 0.5px solid var(--border-light);
+    border-radius: 16px; padding: 2rem;
+  }
+  .tier.featured-tier { border: 1.5px solid var(--teal); }
+  .tier-badge {
+    display: inline-block;
+    font-size: 11px; font-weight: 500;
+    padding: 4px 12px; border-radius: 14px;
+    margin-bottom: 1.2rem;
+  }
+  .badge-small { background: var(--teal-light); color: var(--teal-deeper); }
+  .badge-enterprise { background: var(--purple-light); color: var(--purple); }
+  .tier h3 { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+  .tier > p { font-size: 14px; color: var(--text-muted); margin-bottom: 1.5rem; }
+  .tier ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .tier ul li {
+    font-size: 14px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .tier ul li::before {
+    content: '✓'; color: var(--teal);
+    font-weight: 600; flex-shrink: 0;
+  }
+  .tier-price {
+    margin-top: 1.5rem; padding-top: 1.5rem;
+    border-top: 0.5px solid var(--border-light);
+    font-size: 14px; color: var(--text-muted);
+  }
+  .tier-price strong { font-size: 22px; color: var(--text); font-weight: 500; }
+
+  /* PROCESS */
+  .process-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; position: relative;
+  }
+  .process-step {
+    padding: 0 1.5rem 0 0;
+    position: relative;
+  }
+  .step-num {
+    font-family: var(--serif); font-size: 48px;
+    color: var(--teal-light); line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .process-step h4 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .process-step p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+  /* CONTACT */
+  .contact-box {
+    background: var(--bg-soft);
+    border-radius: 20px; padding: 3rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: center;
+  }
+  .contact-box h2 {
+    font-family: var(--serif);
+    font-size: 32px; font-weight: 400;
+    margin-bottom: 1rem;
+  }
+  .contact-box p { font-size: 15px; color: var(--text-muted); margin-bottom: 1.5rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 10px; }
+  .contact-link {
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border: 0.5px solid var(--border-light);
+    border-radius: 12px; padding: 14px 18px;
+    font-size: 14px; color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .contact-link:hover { border-color: var(--teal); }
+  .contact-link .cl-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .contact-link .cl-label { font-weight: 500; font-size: 13px; }
+  .contact-link .cl-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* FOOTER */
+  footer {
+    max-width: 1100px; margin: 0 auto;
+    padding: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-size: 13px; color: var(--text-faint); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: block; color: var(--text); }
+    .hero { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
+    .hero h1 { font-size: 36px; }
+    .hero-visual { display: none; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .stat { border-right: none; border-bottom: 0.5px solid var(--border-light); }
+    .services-grid, .tiers-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .contact-box { grid-template-columns: 1fr; padding: 2rem; }
+    section { padding: 3rem 1.5rem; }
+    section h2 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-wrapper">
+  <nav>
+    <a href="#" class="logo">Data<span>Forge</span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Start a project ↗</a>
+    <button class="hamburger" aria-label="Menu">☰</button>
+  </nav>
+</div>
+
+<!-- HERO -->
+<div style="border-bottom: 0.5px solid var(--border-light);">
+  <div class="hero">
+    <div>
+      <div class="hero-badge">Open for freelance projects</div>
+      <h1>Data that <em>works</em><br>for your business</h1>
+      <p>From quick analytics for small teams to production-grade pipelines for enterprise — we turn your raw data into decisions that drive growth.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Start a project ↗</a>
+        <a href="#services" class="btn-ghost">Explore services</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div style="font-size:12px;font-weight:500;color:var(--text-muted);margin-bottom:4px;letter-spacing:0.5px;">LIVE PIPELINE</div>
+      <div class="pipeline-step">
+        <div class="icon icon-blue">📥</div>
+        <div>
+          <div>Raw Data Source</div>
+          <div style="font-size:11px;color:var(--text-faint);font-weight:400;">CSV / API / Database</div>
+        </div>
+        <span class="arrow">↓</span>
+      </div>
+      <div class="pipeline-connector"></div>
+      <div class="pipeline-step">
+        <div class="icon icon-amber">⚙️</div>
+        <div>
+          <div>Transform & Clean</div>
+          <div style="font-size:11px;color:var(--text-faint);font-weight:400;">dbt · PySpark · Python</div>
+        </div>
+        <span class="arrow">↓</span>
+      </div>
+      <div class="pipeline-connector"></div>
+      <div class="pipeline-step">
+        <div class="icon icon-teal">❄️</div>
+        <div>
+          <div>Load to Warehouse</div>
+          <div style="font-size:11px;color:var(--text-faint);font-weight:400;">Snowflake · Azure · GCP</div>
+        </div>
+        <span class="arrow">↓</span>
+      </div>
+      <div class="pipeline-connector"></div>
+      <div class="pipeline-step" style="border-color:var(--teal);">
+        <div class="icon icon-teal">📊</div>
+        <div>
+          <div>Business Insights</div>
+          <div style="font-size:11px;color:var(--teal-dark);font-weight:400;">Power BI · Metabase</div>
+        </div>
+        <span style="margin-left:auto;color:var(--teal);font-size:12px;font-weight:500;">✓ Live</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div style="border-bottom: 0.5px solid var(--border-light);">
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">1.5yr</div>
+      <div class="stat-label">Enterprise experience</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">3×</div>
+      <div class="stat-label">Cloud certifications</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">30%</div>
+      <div class="stat-label">Avg. pipeline efficiency gain</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Workflows orchestrated</div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What we offer</div>
+  <h2>Services for every scale</h2>
+  <p class="section-sub">Two clear tiers — one for businesses that need insights fast, one for teams building infrastructure that lasts.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon icon-teal">📊</div>
+      <h3>Business Data Analysis</h3>
+      <p>For small businesses drowning in spreadsheets. We clean, analyse, and visualise your data so you can make decisions with confidence — not guesswork.</p>
+      <span class="service-tag tag-small">Small business</span>
+    </div>
+    <div class="service-card featured">
+      <div class="service-icon icon-purple">🔧</div>
+      <h3>ETL Pipeline Engineering</h3>
+      <p>End-to-end data pipelines using Snowflake, dbt, and cloud platforms. Built for reliability, governance, and scale from day one.</p>
+      <span class="service-tag tag-enterprise">Enterprise</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon icon-amber">📈</div>
+      <h3>Dashboards & Reporting</h3>
+      <p>Power BI and Metabase dashboards connected to your live data. Auto-refreshing, mobile-friendly, and built for non-technical teams to use daily.</p>
+      <span class="service-tag tag-small">Small business</span>
+    </div>
+    <div class="service-card">
+      <div class="service-icon icon-blue">☁️</div>
+      <h3>Cloud Data Architecture</h3>
+      <p>Medallion architecture, data lake design on GCP or Azure, Delta Lake, and Databricks — purpose-built for your scale and compliance needs.</p>
+      <span class="service-tag tag-enterprise">Enterprise</span>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" style="background:var(--bg-soft);">
+  <div class="section-label">Tech stack</div>
+  <h2>Tools we work with</h2>
+  <p class="section-sub">Certified and production-tested across cloud, orchestration, and analytics platforms.</p>
+  <div class="stack-group">
+    <div class="stack-group-label">Cloud & Platforms</div>
+    <div class="pills">
+      <span class="pill">Snowflake</span>
+      <span class="pill">Azure ADF + ADLS Gen2</span>
+      <span class="pill">GCP</span>
+      <span class="pill">Databricks</span>
+      <span class="pill">Apache Kafka</span>
+      <span class="pill">dbt</span>
+      <span class="pill">Delta Lake</span>
+    </div>
+  </div>
+  <div class="stack-group">
+    <div class="stack-group-label">Languages & Orchestration</div>
+    <div class="pills">
+      <span class="pill">Python</span>
+      <span class="pill">SQL</span>
+      <span class="pill">PySpark</span>
+      <span class="pill">Informatica IICS</span>
+      <span class="pill">Stonebranch</span>
+      <span class="pill">Docker</span>
+      <span class="pill">CI/CD Pipelines</span>
+    </div>
+  </div>
+  <div class="stack-group">
+    <div class="stack-group-label">BI & Visualisation</div>
+    <div class="pills">
+      <span class="pill">Power BI</span>
+      <span class="pill">Metabase</span>
+      <span class="pill">Looker</span>
+    </div>
+  </div>
+  <div class="stack-group" style="margin-bottom:0">
+    <div class="stack-group-label">Certifications</div>
+    <div class="pills">
+      <span class="pill cert">🏅 SnowPro Core</span>
+      <span class="pill cert">🏅 Databricks DE Associate</span>
+      <span class="pill cert">🏅 Databricks DE Professional</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-label">How it works</div>
+  <h2>Simple, transparent process</h2>
+  <p class="section-sub">From first conversation to delivered solution — here's exactly what working with DataForge looks like.</p>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <h4>Discovery Call</h4>
+      <p>Free 30-minute call to understand your data challenges, goals, and current setup.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <h4>Scoped Proposal</h4>
+      <p>A clear written proposal with timeline, deliverables, and pricing. No surprises.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <h4>Build & Review</h4>
+      <p>Regular check-ins during delivery. You review at every milestone before we move on.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <h4>Handover & Support</h4>
+      <p>Full documentation, walkthrough, and 2-week post-delivery support included.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:var(--bg-soft);">
+  <div class="section-label">Pricing</div>
+  <h2>Transparent, fair pricing</h2>
+  <p class="section-sub">All projects start with a free discovery call. No lock-in, no hidden fees, no jargon.</p>
+  <div class="tiers-grid">
+    <div class="tier">
+      <span class="tier-badge badge-small">Small business</span>
+      <h3>Analysis & Dashboards</h3>
+      <p>Perfect for businesses that need quick, actionable insights without heavy infrastructure or long timelines.</p>
+      <ul>
+        <li>Data cleaning & preparation</li>
+        <li>Excel / CSV / Google Sheets analysis</li>
+        <li>Power BI or Metabase dashboard</li>
+        <li>1-week delivery</li>
+        <li>Walkthrough + documentation</li>
+      </ul>
+      <div class="tier-price">Starting at <strong>₹5,000</strong> /project</div>
+    </div>
+    <div class="tier featured-tier">
+      <span class="tier-badge badge-enterprise">Enterprise</span>
+      <h3>Pipeline & Architecture</h3>
+      <p>For teams that need scalable, production-grade data infrastructure — built right the first time with full governance.</p>
+      <ul>
+        <li>ETL/ELT pipeline design & deployment</li>
+        <li>Cloud data lake setup (GCP / Azure)</li>
+        <li>Data modeling with dbt</li>
+        <li>PII masking & audit trails</li>
+        <li>Ongoing retainer available</li>
+      </ul>
+      <div class="tier-price">Starting at <strong>₹800</strong> /hour</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="border-bottom:none;">
+  <div class="contact-box">
+    <div>
+      <div class="section-label">Get in touch</div>
+      <h2>Let's build something together</h2>
+      <p>Whether you need a quick dashboard or a full data platform — reach out and we'll reply within 24 hours. First call is always free.</p>
+      <a href="mailto:pkeerthiyadav2003@gmail.com" class="btn-primary">Book a free discovery call ↗</a>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:pkeerthiyadav2003@gmail.com" class="contact-link">
+        <div class="cl-icon icon-teal">📧</div>
+        <div>
+          <div class="cl-label">Email</div>
+          <div class="cl-sub">pkeerthiyadav2003@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://linkedin.com/in/keerthi-p" target="_blank" class="contact-link">
+        <div class="cl-icon icon-blue">💼</div>
+        <div>
+          <div class="cl-label">LinkedIn</div>
+          <div class="cl-sub">linkedin.com/in/keerthi-p</div>
+        </div>
+      </a>
+      <a href="https://github.com/pkeerthics20-de" target="_blank" class="contact-link">
+        <div class="cl-icon" style="background:#f0f0f0;">💻</div>
+        <div>
+          <div class="cl-label">GitHub Portfolio</div>
+          <div class="cl-sub">pkeerthics20-de</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 DataForge. Built for data-driven businesses.</p>
+  <p style="font-size:13px;color:var(--text-faint);">Bengaluru, India</p>
+</footer>
+
+</body>
+</html>
